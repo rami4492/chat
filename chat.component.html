@@ -1,0 +1,41 @@
+
+<!-- ng chat START-->
+
+<div class="ng-chat-wrap"  [ngClass]= "chatApp ? 'open-chat' :''" >
+
+    <div class="ng-chat-header" (click)="ngChatOpen()" > Friends </div>
+
+    <!-- User Search -->
+    <input id="ng-chat-search_friend" type="search" placeholder="Search" class="ng-pristine ng-valid ng-touched">
+    <!-- User Search -->
+
+    <!-- User List -->
+    <div class="col-md-12 ng-chat-users" >
+        <div class="row ng-chat-user" *ngFor="let user of chatUserList" (click)="addChatWindow( user )" >
+            <img class="img-circle avatar" height="30" width="30" src="https://cdn1.iconfinder.com/data/icons/unique-round-blue/93/user-512.png">
+            <strong class="ng-chat-user-name" title="{{user.nickname}}">{{user.nickname}}</strong>
+            <span class="ng-chat-user-msg-count" *ngIf="user.msgCount" >{{user.msgCount}}</span>
+            <span class="ng-chat-user-status" title="Online"></span>
+        </div>
+    </div>
+    <!-- User List -->
+
+    <!-- chat-window -->
+    <div class="ng-chat-window" [ngClass]= "window.isCollapsed ? 'collapsed' :'not-collapsed'" *ngFor="let window of chatWindowsList;let i = index" [ngStyle]="{'left': 282 + 320 * i + 'px'}"  >
+        <div  class="ng-chat-title" >
+            <strong  title="{{ window.nickname }}"> {{ window.nickname }}</strong>
+            <span  class="ng-chat-user-status online" title="Online"></span>
+            <a  class="ng-chat-close" (click)="removeWindow( window )" >X</a>
+            <a  class="ng-chat-minimize" (click)="collapsedWindow( window )" ><i class="fa fa-window-minimize"></i></a>
+        </div>
+        <div class="ng-chat-messages" >
+                <div class="ng-chat-message" [ngClass]= "mymsgObj.from ? 'other-message' :'my-message'" *ngFor="let mymsgObj of window.msgHistory">
+                    {{mymsgObj.msg}}
+                    <span class="user-nickname" > {{ mymsgObj.socketFrom }} </span>
+                </div>
+        </div>
+        <input (keydown)="onChatInputTyped($event, msgToSend , window)" #msgToSend type="text" placeholder="Type a message">
+    </div>
+    <!-- chat-window -->
+</div>
+<!-- ng chat END-->
